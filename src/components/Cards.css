@@ -13,7 +13,7 @@ h1,h2,h3,h4,h5,a,p{
 .user-card {
     width: 100%;
     height: 250px;
-    margin: 10px 0;
+    margin: 10px auto;
     padding: 10px;
     background-color: #f7dfdf;
     border-radius: 20px;
@@ -64,7 +64,8 @@ span{
 
 @media (max-width: 768px) {
     .user-card{
-        height: 200px;
+        height: 180px;
+        width: 100%;
     }
     .user-info h2 {
         font-size: 20px ;
@@ -73,14 +74,30 @@ span{
         font-size: 16px;
     }
     .user-info p{
-        font-size: 8px !important;
+        font-size: 10px !important;
+        line-height: 10px;
     }
     .user-info button{
-        font-size: 14px;
+        font-size: 12px;
         margin: 0 5px !important;
-        width: calc(40% - 10px) !important;  
+        width: calc(45% - 10px) !important;  
     }
     footer{
         height: 100px;
     }
+}
+
+@media (max-width: 768px){
+    .container{
+        padding: 0 !important;
+    }
+    .user-card{
+        width: 100%;
+        margin: 0 auto !important;
+        height: 550px;
+    }
+    .user-img{
+        height: 70%;
+    }
+    
 }

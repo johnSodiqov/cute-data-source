@@ -61,9 +61,9 @@ const Cards = () => {
   return (
     <div className="container-fluid">
       <div className="container">
-        <div className='row gx-0'>
+        <div className='row gx-0 m-0 p-0'>
 
-          <div className="row my-5">
+          <div className="row my-5 mx-auto">
             <div className="col-12 col-lg-5 my-md-0 my-3"><input type="text" className='form-control' onInput={(i) => setimg(i.target.value)} placeholder='Enter the images URL ' /></div>
             <div className="col-12 col-md-5 my-md-0 my-3"><input type="text" className='form-control' onInput={(i) => setname(i.target.value)} placeholder='Enter the name' /></div>
             <div className="col-4 col-md-1 mx-md-0 mx-3">
@@ -110,15 +110,15 @@ const Cards = () => {
             </div>
           </div>
 
-          <div className="user row">
+          <div className="user row p-0 m-0">
             {massiv.map((data, index) => {
               return (
                 <div key={index} className='col-12 col-md-6'>
-                  <div className="user-card row">
-                    <div className="user-img col-5">
+                  <div className="user-card row ">
+                    <div className="user-img col-12 col-md-5 col-xs-5">
                       <img src={data.image} alt={data.name} />
                     </div>
-                    <div className="user-info col-7">
+                    <div className="user-info col-12 col-md-7 col-xs-5">
                       <h2 className='text-dark text-start w-100'>{data.name}</h2>
                       <h5 className='text-dark text-start w-100'>{data.job}</h5>
                       <p className='text-dark text-start w-100'>Lorem ipsum dolor sit amet consectetur adipisicing elit. Repudiandae vel nulla aut reiciendis impedit, harum </p>
