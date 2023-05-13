@@ -31,6 +31,15 @@ class Userdata {
  
         return user;
      }
+     async editUser(add,id) {
+        let user = Fetchdata.put(`${baseUrl1}/${id}`,add) 
+        .then(respons =>{
+         return respons.data;
+        })
+        .catch(e =>{console.log(e)})
+ 
+        return user;
+     }
 }
 
 export default new Userdata();
