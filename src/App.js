@@ -1,12 +1,14 @@
 
 import './App.css';
-import Cards from './components/Cards';
+// import Cards from './components/Cards';
+import LoginPage from './components/loginPage';
 
 function App() {
   return (
     <div className="App">
       <header className="App-header">
-        <Cards />
+        <LoginPage/>
+        {/* <Cards /> */}
       </header>
     </div>
   );

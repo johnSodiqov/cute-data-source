@@ -7,6 +7,8 @@ body {
   -moz-osx-font-smoothing: grayscale;
   background-color: rgb(251, 204, 247) !important;
   font-family: 'Rubik', sans-serif !important;
+  /* background-image: url("/src/components/bg-image.png"); */
+  
 }
 
 code {
@@ -14,12 +16,12 @@ code {
     monospace;
 }
 
-::-webkit-scrollbar{
+::-webkit-scrollbar {
   background-color: rgb(255, 219, 254);
   width: 10px;
 }
 
-::-webkit-scrollbar-thumb{
+::-webkit-scrollbar-thumb {
   background-color: rgba(250, 128, 183, 0.826);
   border-radius: 10px;
 }

@@ -1,0 +1,40 @@
+body {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    background-color: pink;
+}
+
+.container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    width: 100vw;
+    height: 100vh;
+    
+}
+
+.form {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    width: 450px;
+    height: auto;
+    margin: 0 auto;
+    padding: 30px 20px;
+    background-color: #fff;
+    border-radius: 20px;
+
+}
+
+@media (max-width: 480px) {
+    .form {
+        width: 90%;
+        padding: 30px 20px;
+    }
+    .form button{
+        margin: 10px 0;
+    }
+}
