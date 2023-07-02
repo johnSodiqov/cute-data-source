@@ -2,30 +2,30 @@ import React, { useEffect, useState, } from 'react';
 import Userdata from './Userdata';
 import "./Cards.css"
 import { BsTelegram, BsInstagram, BsFacebook } from "react-icons/bs"
-import { useLocation,useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 const Cards = () => {
   const [massiv, setmassiv] = useState([]);
   const [img, setimg] = useState('');
   const [name, setname] = useState('');
-  const [job, setJob] = useState(" ");
-  const [description, setDescription] = useState(" ");
+  const [job, setJob] = useState("");
+  const [description, setDescription] = useState("");
   const [jobs] = useState([
     "Game Developer", "Software Engineer", "Art Designer", "Web Developer", "Frontend Developer",
-    "Backend Developer", "AI Engineer" ,"Project Manager"]);
+    "Backend Developer", "AI Engineer", "Project Manager"]);
 
   const [newID, setnewID] = useState();
   const location = useLocation()
   const navigate = useNavigate()
   const [isAdmin, setIsAdmin] = useState(false);
-  const [val, setVal] = useState('');
+  const [searchValue, setSearch] = useState('');
 
   useEffect(() => {
     setIsAdmin(location.state)
-    run()
-  },[location.state])
+    getData()
+  }, [location.state])
 
-  function run() {
+  function getData() {
     Userdata.getuser()
       .then(res => {
         setmassiv(res);
@@ -35,12 +35,11 @@ const Cards = () => {
   function deleteUser(id) {
     Userdata.deluser(id)
       .then(res => {
-        console.log(res);
-        run();
+        getData();
       })
   }
 
-  function send() {
+  function addUser() {
     let all = {
       name: name,
       image: img,
@@ -49,14 +48,18 @@ const Cards = () => {
     }
     Userdata.postuser(all)
       .then(res => {
-        console.log(res);
-        run();
+        getData();
       })
+    setimg("")
+    setname("")
+    setDescription("")
+
   }
 
   function getID(id) {
     setnewID(id);
   }
+
 
   function editUser() {
 
@@ -69,28 +72,35 @@ const Cards = () => {
 
     Userdata.editUser(newUser, newID.id)
       .then(res => {
-        run()
+        getData()
       })
+
+    setimg("")
+    setname("")
+    setDescription("")
 
   }
 
-  const search = massiv.filter(name => {
-    return name.name.toLowerCase().includes(val.toLowerCase())
+  const search = (massiv.length > 0) && massiv.filter(name => {
+    return name.name.toLowerCase().includes(searchValue.toLowerCase())
+
   })
 
+
   return (
-    <div>
+    <div className='position-relative' style={{ minHeight: '100vh' }}>
 
       <nav className="navbar  mb-3">
         <div className="container-fluid row">
           <a href='/' className="navbar-brand col-12 col-md-3">Cute.data</a>
           <form className="d-flex col-10 col-md-6 my-3">
-            <input className="form-control me-2 navbar-search" type="search" placeholder="Search" aria-label="Search" onChange={(val) => setVal(val.target.value)} />
+            <input className="form-control me-2 navbar-search" type="search" placeholder="Search" aria-label="Search" onChange={(val) => setSearch(val.target.value)} />
           </form>
-          <button className='btn col-2' onClick={()=>{navigate("/login")}}>Log Out</button>
+          <button className='btn col-2' onClick={() => { navigate("/login") }}>Log Out</button>
         </div>
       </nav>
-      <div className="container-fluid">
+
+      <div className="container-fluid position-static">
 
         <div className="container h-auto">
           <div className='row gx-0 m-0 p-0'>
@@ -115,10 +125,10 @@ const Cards = () => {
                       <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div className="modal-body">
-                      <div className="col-12"><input type="text" className='form-control my-1' onInput={(i) => setimg(i.target.value)} placeholder='Enter the images URL' /></div>
-                      <div className="col-12"><input type="text" className='form-control my-1' onInput={(i) => setname(i.target.value)} placeholder='Enter the name' /></div>
+                      <div className="col-12"><input type="text" value={img} className='form-control my-1' onInput={(i) => setimg(i.target.value)} placeholder='Enter the images URL' /></div>
+                      <div className="col-12"><input type="text" value={name} className='form-control my-1' onInput={(i) => setname(i.target.value)} placeholder='Enter the name' /></div>
                       <div className="form-floating">
-                        <textarea className="form-control h-100 my-2" placeholder="Please tell us about yourself..." id="floatingTextarea2" onChange={(val) => setDescription(val.target.value)}></textarea>
+                        <textarea value={description} className="form-control h-100 my-2" placeholder="Please tell us about yourself..." id="floatingTextarea2" onChange={(val) => setDescription(val.target.value)}></textarea>
                         <label htmlFor="floatingTextarea2">Please tell us about yourself...</label>
                       </div>
                       <div className="col-1">
@@ -128,13 +138,12 @@ const Cards = () => {
 
                         <ul className="dropdown-menu">
                           {
-                            jobs.map((item, index) => {
+                            (jobs.length > 0) ? jobs.map((item, index) => {
                               return (
                                 <li key={index}><p className="dropdown-item" role='button' href="qwer" onClick={() => setJob(item)}>{item}</p></li>
                               )
-                            })
+                            }) : " "
                           }
-
                         </ul>
 
                       </div>
@@ -155,31 +164,33 @@ const Cards = () => {
                       <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div className="modal-body">
-                      <div className="col-12  my-3"><input type="text" className='form-control' onInput={(i) => setimg(i.target.value)} placeholder='Enter the images URL ' /></div>
-                      <div className="col-12  my-3"><input type="text" className='form-control' onInput={(i) => setname(i.target.value)} placeholder='Enter the name' /></div>
+                      <div className="col-12  my-3"><input type="text" value={img} className='form-control' onInput={(i) => setimg(i.target.value)} placeholder='Enter the images URL ' /></div>
+                      <div className="col-12  my-3"><input type="text" value={name} className='form-control' onInput={(i) => setname(i.target.value)} placeholder='Enter the name' /></div>
                       <div className="form-floating">
-                        <textarea className="form-control h-50 my-2" placeholder="Please tell us about yourself..." id="floatingTextarea2" onChange={(val) => setDescription(val.target.value)}></textarea>
+                        <textarea value={description} className="form-control h-50 my-2" placeholder="Please tell us about yourself..." id="floatingTextarea2" onChange={(val) => setDescription(val.target.value)}></textarea>
                         <label htmlFor="floatingTextarea2">Please tell us about yourself...</label>
                       </div>
                       <div className="col-4 col-md-1 mx-md-0 mx-3">
                         <button type="button" className="btn px-4 px-md-3 dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
                           Job
                         </button>
+
                         <ul className="dropdown-menu">
-                        {
-                            jobs.map((item, index) => {
+                          {
+                            (jobs.length > 0) ? jobs.map((item, index) => {
                               return (
                                 <li key={index}><p className="dropdown-item" role='button' href="qwer" onClick={() => setJob(item)}>{item}</p></li>
                               )
-                            })
+                            }) : " "
                           }
                         </ul>
+
                       </div>
 
                     </div>
                     <div className="modal-footer">
                       <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                      <button type="button" className="btn btn-primary" onClick={send} data-bs-dismiss="modal">Save changes</button>
+                      <button type="button" className="btn btn-primary" onClick={addUser} data-bs-dismiss="modal">Save changes</button>
                     </div>
                   </div>
                 </div>
@@ -187,27 +198,49 @@ const Cards = () => {
             </div>
 
             <div className="user row p-0 m-0">
-              {search.map((data, index) => {
-                return (
-                  <div key={index} className='col-12 col-md-6'>
-                    <div className="user-card row ">
-                      <div className="user-img col-5 col-md-5 col-xs-5">
-                        <img src={data.image} alt={data.name} />
-                      </div>
-                      <div className="user-info col-7 col-md-7 col-xs-5">
-                        <h2 className='text-dark text-start w-100'>{data.name}</h2>
-                        <h5 className='text-dark text-start w-100'>{data.job}</h5>
-                        <p className='text-dark text-start w-100'>{data.description}</p>
-                        {
-                          (isAdmin) ?
-                            <div className='w-100'><button className='btn w-25 mx-3 mt-md-2 m-0 ' onClick={() => deleteUser(data.id)}>Delete</button>
-                              <button type="button" className="btn w-25 mx-3 mt-md-2 mt-0 " data-bs-toggle="modal" data-bs-target="#editModal" onClick={() => getID(data)}>Edit</button></div> : " "
-                        }
+              {
+                (search.length > 0) ? search.map((data, index) => {
+                  return (
+                    <div key={index} className='col-12 col-md-6'>
+                      <div className="user-card row ">
+                        <div className="user-img col-5 col-md-5 col-xs-5">
+                          <img src={data.image} alt={data.name} />
+                        </div>
+                        <div className="user-info col-7 col-md-7 col-xs-5">
+                          <h2 className='text-dark text-start w-100'>{data.name}</h2>
+                          <h5 className='text-dark text-start w-100'>{data.job}</h5>
+                          <p className='text-dark text-start w-100'>{data.description}</p>
+                          {
+                            (isAdmin) ?
+                              <div className='w-100'><button className='btn w-25 mx-3 mt-md-2 m-0 ' onClick={() => deleteUser(data.id)}>Delete</button>
+                                <button type="button" className="btn w-25 mx-3 mt-md-2 mt-0 " data-bs-toggle="modal" data-bs-target="#editModal" onClick={() => getID(data)}>Edit</button></div> : " "
+                          }
+                        </div>
                       </div>
                     </div>
-                  </div>
-                )
-              })
+                  )
+                }) :
+                  massiv.map((data, index) => {
+                    return (
+                      <div key={index} className='col-12 col-md-6'>
+                        <div className="user-card row ">
+                          <div className="user-img col-5 col-md-5 col-xs-5">
+                            <img src={data.image} alt={data.name} />
+                          </div>
+                          <div className="user-info col-7 col-md-7 col-xs-5">
+                            <h2 className='text-dark text-start w-100'>{data.name}</h2>
+                            <h5 className='text-dark text-start w-100'>{data.job}</h5>
+                            <p className='text-dark text-start w-100'>{data.description}</p>
+                            {
+                              (isAdmin) ?
+                                <div className='w-100'><button className='btn w-25 mx-3 mt-md-2 m-0 ' onClick={() => deleteUser(data.id)}>Delete</button>
+                                  <button type="button" className="btn w-25 mx-3 mt-md-2 mt-0 " data-bs-toggle="modal" data-bs-target="#editModal" onClick={() => getID(data)}>Edit</button></div> : " "
+                            }
+                          </div>
+                        </div>
+                      </div>
+                    )
+                  })
               }
             </div>
           </div>
